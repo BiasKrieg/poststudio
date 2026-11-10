@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Post Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{--bl:#2a2cff;--y:#ffe14d;--pk:#ff7ac8;--k:#0a0a1f;--w:#fff;--hd:"Bricolage Grotesque","Arial Black",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bl);background-image:radial-gradient(#ffffff22 1.5px,transparent 1.5px);background-size:22px 22px;color:var(--w);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1060px;margin:auto;padding:18px 16px 70px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font:800 1.4rem var(--hd);background:var(--y);color:var(--k);padding:4px 12px;border:3px solid var(--k);box-shadow:4px 4px 0 var(--k);transform:rotate(-2deg)}
+.stk{background:var(--pk);color:var(--k);font-weight:700;font-size:.85rem;padding:4px 12px;border:3px solid var(--k);border-radius:20px;transform:rotate(2deg)}
+h1{font:800 clamp(2.4rem,7vw,4.6rem)/.95 var(--hd);margin:26px 0 18px;letter-spacing:-.03em;max-width:12em}
+#reel{background:var(--y);color:var(--k);border:3px solid var(--k);box-shadow:8px 8px 0 var(--k);padding:18px 20px;font:800 clamp(1.2rem,3.4vw,1.9rem)/1.2 var(--hd);min-height:110px;display:flex;align-items:center;margin-bottom:26px}
+#reel.spin{filter:blur(1.2px);background:var(--pk)}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:start}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--w);color:var(--k);border:3px solid var(--k);box-shadow:6px 6px 0 var(--k);padding:18px;margin-bottom:22px}
+h2{font:800 1.25rem var(--hd);margin:0 0 6px}
+label{display:block;font-weight:700;font-size:.85rem;margin:14px 0 5px}
+input,select,textarea{width:100%;padding:10px;border:3px solid var(--k);font:inherit;color:var(--k);background:#fff;border-radius:0}
+textarea{resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{padding:6px 12px;border:3px solid var(--k);background:#fff;font:700 .9rem system-ui;cursor:pointer;color:var(--k)}
+.chips button[aria-pressed=true]{background:var(--bl);color:#fff;box-shadow:3px 3px 0 var(--k)}
+button{font:inherit}
+.big{background:var(--pk);color:var(--k);border:3px solid var(--k);box-shadow:5px 5px 0 var(--k);padding:12px 20px;font:800 1.1rem var(--hd);cursor:pointer;transition:transform .1s,box-shadow .1s}
+.big:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--k)}
+.big:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--k)}
+.sm{background:#fff;color:var(--k);border:2px solid var(--k);padding:4px 10px;font-weight:700;font-size:.85rem;cursor:pointer}
+.sm:hover{background:var(--y)}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.tg{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:.9rem;font-weight:600}
+.tg label{display:flex;gap:6px;align-items:center;margin:0;font-size:.9rem}
+.tg input{width:auto}
+:focus-visible{outline:4px solid var(--pk);outline-offset:2px}
+.phone{background:#fff;color:var(--k);border:3px solid var(--k);border-radius:30px;box-shadow:8px 8px 0 var(--k);padding:16px;margin-bottom:22px}
+.who{display:flex;gap:10px;align-items:center}
+#av{width:42px;height:42px;border-radius:50%;background:var(--bl);color:#fff;display:grid;place-items:center;font:800 1.1rem var(--hd)}
+#pn{font-weight:800}
+#pb{white-space:pre-wrap;margin:10px 0;word-break:break-word}
+.ln{color:#1f6feb}
+.fk{display:flex;gap:18px;font-size:.85rem;color:#666}
+.sc{display:flex;gap:16px;align-items:center}
+#ring{--p:0;width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--bl) calc(var(--p)*1%),#e3e3ee 0);display:grid;place-items:center;flex:none}
+#ring div{width:72px;height:72px;border-radius:50%;background:#fff;display:grid;place-items:center;font:800 1.7rem var(--hd)}
+#verdict{font:800 1.1rem var(--hd)}
+#tips{font-size:.88rem;color:#444}
+.dr{border:3px solid var(--k);padding:10px;margin:12px 0;cursor:pointer;background:#fff}
+.dr.sel{background:#fff6c2;box-shadow:5px 5px 0 var(--pk)}
+.dr textarea{min-height:140px;border-width:2px}
+.bar{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.bar span{margin-right:auto;font-size:.85rem;font-weight:700}
+.over{color:#d00}
+.pk{border-bottom:2px dashed #bbb;padding:10px 0}
+.pk pre{white-space:pre-wrap;font:inherit;margin:4px 0 8px}
+.lk{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #ddd;font-size:.9rem}
+.lk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#msg{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--k);color:#fff;border:3px solid var(--y);padding:8px 18px;font-weight:800;transition:transform .25s}
+#msg.on{transform:translateX(-50%)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><main>
+<header><div class="logo">Post Studio</div><div class="stk">free, runs in your browser</div></header>
+<h1>Make people stop scrolling.</h1>
+<div id="reel" aria-live="polite">Nobody tells you this about your next big post.</div>
+
+<div class="grid"><div>
+<section class="card">
+<h2>1. Feed the machine</h2>
+<label for="topic">Topic</label>
+<input id="topic" placeholder="Arsenal's title race, an air fryer, a Raspberry Pi...">
+<label for="angle">Your angle (optional, this makes it sound like you)</label>
+<textarea id="angle" rows="2" placeholder="Saka's work rate beats most midfielders"></textarea>
+<label>Style</label>
+<div class="chips" data-g="form">
+<button data-v="curiosity" aria-pressed="true">Curiosity</button><button data-v="hot" aria-pressed="false">Hot take</button><button data-v="story" aria-pressed="false">Story</button><button data-v="list" aria-pressed="false">List</button><button data-v="cliff" aria-pressed="false">Cliffhanger</button><button data-v="contra" aria-pressed="false">Contrarian</button><button data-v="mix" aria-pressed="false">Surprise me</button></div>
+<div class="row"><div><label>Platform</label>
+<div class="chips" data-g="plat"><button data-v="500" aria-pressed="true">Threads</button><button data-v="280" aria-pressed="false">X</button><button data-v="0" aria-pressed="false">Facebook</button></div></div>
+<div><label>Language</label>
+<div class="chips" data-g="lang"><button data-v="ms" aria-pressed="true">BM</button><button data-v="en" aria-pressed="false">English</button></div></div></div>
+<label for="link">Affiliate link</label>
+<input id="link" placeholder="https://..." inputmode="url">
+<select id="pick" aria-label="Saved links" style="margin-top:8px"><option value="">Or pick a saved link</option></select>
+<div class="tg"><label><input type="checkbox" id="emo" checked>Emoji</label><label><input type="checkbox" id="ad" checked>#ad disclosure</label><label><input type="checkbox" id="tag">Topic tag</label></div>
+<div class="acts"><button class="big" id="spin">Spin 3 posts</button><button class="big" id="pk" style="background:var(--y)">7-day pack</button><button class="sm" id="ask">Copy prompt for Claude</button></div>
+</section>
+
+<section class="card" id="drafts" hidden><h2>2. Pick your favourite</h2><p style="margin:0;font-size:.9rem">Click a draft to preview it. Edit freely, the score updates live.</p><div id="dl"></div></section>
+<section class="card" id="pack" hidden><h2>Your week</h2><div class="acts" style="margin:6px 0"><button class="sm" id="packall">Copy all 7</button></div><div id="pl"></div></section>
+</div>
+
+<aside>
+<div class="phone"><div class="who"><div id="av">Y</div><div><div id="pn">@yourname</div><div style="font-size:.8rem;color:#777">just now</div></div></div>
+<div id="pb">Your post shows up here, exactly how it will look on the feed.</div>
+<div class="fk"><span>♡ 128</span><span>💬 24</span><span>↻ 9</span></div></div>
+<div class="card"><div class="sc"><div id="ring"><div id="sn">0</div></div><div><div id="verdict">Scroll-stop score</div><div id="tips">Spin a post to see how strong the hook is.</div></div></div>
+<label for="hd">Preview handle</label><input id="hd" value="@yourname"></div>
+<div class="card"><h2>Vault</h2><div id="vl"><span style="font-size:.9rem">Star a draft to keep it here.</span></div></div>
+<div class="card"><h2>Link library</h2><div class="row"><input id="ln" placeholder="Name" aria-label="Link name"><input id="lu" placeholder="https://..." aria-label="Link URL"></div><div class="acts" style="margin-top:8px"><button class="sm" id="add">Save link</button></div><div id="ll"></div></div>
+</aside></div></main><div id="msg" role="status"></div>
+
+<script>
+const $=id=>document.getElementById(id),pick=a=>a[Math.random()*a.length|0];
+const S={form:"curiosity",plat:500,lang:"ms"};
+const H={en:{curiosity:["Nobody tells you this about {t}.","I spent a week on {t}. One thing surprised me.","Most people get {t} wrong. Here's why.","The real reason {t} matters isn't what you think."],
+hot:["Unpopular opinion: {t} is overrated.","Hot take on {t}: most people do it backwards.","Stop overthinking {t}. Do this instead."],
+story:["Last month {t} changed how I see things.","I used to ignore {t}. Then this happened.","Funny story about {t}..."],
+list:["3 things about {t} I wish I knew sooner:","{t}: 3 quick lessons.","Before you try {t}, read this."],
+cliff:["I almost didn't post this about {t}...","Wait till you see what happened with {t}.","{t}. Read to the end, it gets weird."],
+contra:["Everyone says {t} is the answer. They're missing something.","What if {t} isn't the problem?","You don't need more {t}. You need this."]},
+ms:{curiosity:["Takde orang bagitahu ni pasal {t}.","Seminggu aku kaji {t}. Ada satu benda buat aku terkejut.","Ramai silap pasal {t}. Ni sebabnya.","Sebab sebenar {t} penting bukan seperti yang kau sangka."],
+hot:["Pendapat tak popular: {t} ni overrated.","Hot take pasal {t}: ramai buat terbalik.","Jangan overthink {t}. Buat ni je."],
+story:["Bulan lepas {t} ubah cara aku tengok benda.","Dulu aku abaikan {t}. Lepas tu jadi benda ni.","Cerita kelakar pasal {t}..."],
+list:["3 benda pasal {t} yang aku harap tahu awal:","{t}: 3 pengajaran ringkas.","Sebelum cuba {t}, baca ni dulu."],
+cliff:["Aku hampir tak post benda ni pasal {t}...","Tunggu sampai habis, {t} ni pelik sikit.","Baca sampai habis. {t} ada twist."],
+contra:["Semua orang kata {t} jawapannya. Diorang tertinggal satu benda.","Kalau {t} bukan masalahnya?","Kau tak perlu lebih {t}. Kau perlu ni."]}};
+const B={en:["Small detail, big difference. Most only notice it too late.","I didn't expect this, but the more I looked, the more it made sense.","Here's the part nobody mentions."],ms:["Benda kecil, beza besar. Ramai sedar bila dah terlambat.","Aku tak sangka, tapi makin tengok makin masuk akal.","Ni bahagian yang orang jarang sebut."]};
+const C={en:["Full details here 👇","Link if you want to check it out 👇","Agree? Link below 👇"],ms:["Details penuh kat sini 👇","Link kalau nak tengok 👇","Setuju tak? Link kat bawah 👇"]};
+const AD={en:"#ad (affiliate link)",ms:"#ad (link affiliate)"};
+const E={curiosity:"👀",hot:"🔥",story:"📖",list:"✅",cliff:"😳",contra:"🙅"};
+const toast=t=>{const m=$("msg");m.textContent=t;m.className="on";clearTimeout(toast.t);toast.t=setTimeout(()=>m.className="",1500)};
+const cp=t=>navigator.clipboard.writeText(t).then(()=>toast("Copied 🔥"),()=>toast("Copy failed, select the text"));
+document.querySelectorAll(".chips").forEach(g=>g.onclick=e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));S[g.dataset.g]=g.dataset.g==="plat"?+b.dataset.v:b.dataset.v;document.querySelectorAll(".dr textarea").forEach(t=>t.dispatchEvent(new Event("input")))});
+function topic(){const t=$("topic").value.trim();if(!t){toast("Add a topic first");$("topic").focus()}return t}
+function mk(style,t){const lg=S.lang,st=style==="mix"?pick(Object.keys(H.en)):style,an=$("angle").value.trim(),lk=$("link").value.trim();
+ let s=($("emo").checked?E[st]+" ":"")+pick(H[lg][st]).replace("{t}",t)+"\n\n"+(an||pick(B[lg]))+"\n\n"+pick(C[lg]);
+ if(lk)s+="\n"+lk;
+ if($("tag").checked){const w=t.split(/\s+/).find(x=>x.length>3);if(w)s+="\n#"+w.toLowerCase().replace(/[^a-z0-9]/g,"")}
+ if($("ad").checked)s+="\n"+AD[lg];return s}
+function score(t){const h=t.split("\n")[0],l=h.toLowerCase(),tp=[];let s=35;
+ if(h.length>=20&&h.length<=95)s+=15;else tp.push("Keep the first line between 20 and 95 characters");
+ if(/\d/.test(h))s+=8;else tp.push("A number in the hook helps");
+ if(/\?|\.\.\./.test(h))s+=10;
+ if(/nobody|never|wrong|secret|surpris|truth|why|weird|takde|rahsia|silap|terkejut|sebab|pelik|twist|tak sangka|missing/.test(l))s+=15;else tp.push("Add a curiosity word like nobody, wrong or why");
+ if(/\b(i|my|aku|saya)\b/.test(l))s+=10;else tp.push("Make it personal with I or my");
+ if(/👀|🔥|😳|📖|✅|🙅|👇/.test(t))s+=5;
+ if(/best ever|amazing|buy now|wajib beli|limited/.test(l)){s-=20;tp.push("Drop the hype words")}
+ return{s:Math.max(5,Math.min(100,s)),tp:tp.slice(0,2)}}
+let cur=0;
+function show(t){$("pn").textContent=$("hd").value||"@yourname";$("av").textContent=($("hd").value.replace("@","")||"y")[0].toUpperCase();
+ const b=$("pb");b.textContent="";t.split(/(https?:\/\/\S+)/).forEach(p=>{if(/^https?:/.test(p)){const s=document.createElement("span");s.className="ln";s.textContent=p;b.append(s)}else b.append(p)});
+ const r=score(t),from=cur,t0=performance.now();cur=r.s;
+ (function f(now){const k=Math.min(1,(now-t0)/450),v=from+(r.s-from)*k;$("ring").style.setProperty("--p",v);$("sn").textContent=Math.round(v);if(k<1)requestAnimationFrame(f)})(t0);
+ $("tips").textContent=r.tp.length?r.tp.join(". ")+".":"Strong hook. Post it.";
+ $("verdict").textContent=r.s>=80?"Scroll-stopper":r.s>=60?"Getting there":"Needs a sharper hook"}
+function count(ta,c){const n=ta.value.length;c.textContent=S.plat?n+" / "+S.plat:n+" chars";c.className=S.plat&&n>S.plat?"over":""}
+const btn=(l,f)=>{const b=document.createElement("button");b.className="sm";b.textContent=l;b.onclick=e=>{e.stopPropagation();f()};return b};
+function draft(txt,t){const d=document.createElement("div");d.className="dr";
+ const ta=document.createElement("textarea");ta.value=txt;ta.setAttribute("aria-label","Draft");
+ const c=document.createElement("span"),bar=document.createElement("div");bar.className="bar";
+ const sel=()=>{document.querySelectorAll(".dr").forEach(x=>x.classList.remove("sel"));d.classList.add("sel");show(ta.value)};
+ ta.oninput=()=>{count(ta,c);if(d.classList.contains("sel"))show(ta.value)};
+ d.onclick=sel;ta.onfocus=sel;
+ bar.append(c,btn("🎲 Redo",()=>{ta.value=mk(S.form,t);ta.oninput();sel()}),btn("★ Save",()=>{V.unshift(ta.value);saveV();drawV();toast("Saved to vault")}),btn("Copy",()=>cp(ta.value)));
+ d.append(ta,bar);count(ta,c);return d}
+function spin(){const t=topic();if(!t)return;const pool=Object.values(H[S.lang]).flat(),r=$("reel");let n=0;r.classList.add("spin");
+ const iv=setInterval(()=>{r.textContent=pick(pool).replace("{t}",t);if(++n>12){clearInterval(iv);r.classList.remove("spin");
+  const dl=$("dl");dl.innerHTML="";const ds=[0,1,2].map(()=>draft(mk(S.form,t),t));ds.forEach(x=>dl.append(x));
+  r.textContent=ds[0].querySelector("textarea").value.split("\n")[0];ds[0].click();$("drafts").hidden=false;
+  if(innerWidth<860)$("drafts").scrollIntoView({behavior:"smooth"})}},70)}
+$("spin").onclick=spin;
+$("pk").onclick=()=>{const t=topic();if(!t)return;const seq=["curiosity","hot","story","list","cliff","contra","mix"],w=$("pl"),all=[];w.innerHTML="";
+ seq.forEach((st,i)=>{const x=mk(st,t);all.push(x);const r=document.createElement("div"),h=document.createElement("b"),p=document.createElement("pre");r.className="pk";h.textContent="Day "+(i+1);p.textContent=x;r.append(h,p,btn("Copy",()=>cp(x)));w.append(r)});
+ $("packall").onclick=()=>cp(all.join("\n\n---\n\n"));$("pack").hidden=false;$("pack").scrollIntoView({behavior:"smooth"})};
+$("ask").onclick=()=>{const t=topic();if(!t)return;const an=$("angle").value.trim(),lk=$("link").value.trim();
+ cp("Write 3 creative "+(S.plat===280?"X":S.plat===500?"Threads":"Facebook")+" posts in "+(S.lang==="ms"?"Bahasa Melayu":"English")+" about: "+t+".\n"+(an?"My angle: "+an+"\n":"")+"Style: "+S.form+". Make people curious in the first line, sound like a real person, no hype words.\n"+(S.plat?"Max "+S.plat+" characters each.\n":"")+(lk?"End with this link: "+lk+"\n":"")+($("ad").checked?"Add a short affiliate disclosure (#ad).":""));
+ window.open("https://claude.ai/new","_blank")};
+$("hd").oninput=()=>{const s=document.querySelector(".dr.sel textarea");if(s)show(s.value)};
+const ld=k=>{try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return[]}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let V=ld("ps2_vault"),L=ld("ps2_links");const saveV=()=>sv("ps2_vault",V),saveL=()=>sv("ps2_links",L);
+function drawV(){const w=$("vl");w.innerHTML="";if(!V.length){w.textContent="Star a draft to keep it here.";return}
+ V.forEach((x,i)=>{const r=document.createElement("div");r.className="lk";const s=document.createElement("span");s.textContent=x.split("\n")[0];r.append(s,btn("Copy",()=>cp(x)),btn("✕",()=>{V.splice(i,1);saveV();drawV()}));w.append(r)})}
+function drawL(){const w=$("ll"),p=$("pick");w.innerHTML="";p.length=1;
+ L.forEach((x,i)=>{const r=document.createElement("div");r.className="lk";const s=document.createElement("span");s.textContent=x.n;r.append(s,btn("✕",()=>{L.splice(i,1);saveL();drawL()}));w.append(r);const o=document.createElement("option");o.value=x.u;o.textContent=x.n;p.append(o)})}
+$("add").onclick=()=>{const n=$("ln").value.trim(),u=$("lu").value.trim();if(!n||!u){toast("Add a name and a link");return}L.push({n,u});saveL();$("ln").value=$("lu").value="";drawL()};
+$("pick").onchange=e=>{if(e.target.value){$("link").value=e.target.value;toast("Link added")}};
+drawV();drawL();
+</script></body></html>
