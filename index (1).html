@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Post Studio: Thread Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap" rel="stylesheet">
+<style>
+:root{--bl:#2a2cff;--y:#ffe14d;--pk:#ff7ac8;--k:#0a0a1f;--w:#fff;--hd:"Bricolage Grotesque","Arial Black",system-ui,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bl);background-image:radial-gradient(#ffffff22 1.5px,transparent 1.5px);background-size:22px 22px;color:var(--w);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:1060px;margin:auto;padding:18px 16px 70px}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font:800 1.4rem var(--hd);background:var(--y);color:var(--k);padding:4px 12px;border:3px solid var(--k);box-shadow:4px 4px 0 var(--k);transform:rotate(-2deg)}
+.stk{background:var(--pk);color:var(--k);font-weight:700;font-size:.85rem;padding:4px 12px;border:3px solid var(--k);border-radius:20px;transform:rotate(2deg)}
+h1{font:800 clamp(2.2rem,6.5vw,4.2rem)/.95 var(--hd);margin:24px 0 16px;letter-spacing:-.03em;max-width:13em}
+#reel{background:var(--y);color:var(--k);border:3px solid var(--k);box-shadow:8px 8px 0 var(--k);padding:18px 20px;font:800 clamp(1.15rem,3.2vw,1.8rem)/1.2 var(--hd);min-height:100px;display:flex;align-items:center;margin-bottom:26px}
+#reel.spin{filter:blur(1.2px);background:var(--pk)}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:start}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--w);color:var(--k);border:3px solid var(--k);box-shadow:6px 6px 0 var(--k);padding:18px;margin-bottom:22px}
+h2{font:800 1.25rem var(--hd);margin:0 0 4px}
+.hp{font-size:.85rem;color:#555;margin:0 0 6px}
+label{display:block;font-weight:700;font-size:.85rem;margin:14px 0 5px}
+input,select,textarea{width:100%;padding:10px;border:3px solid var(--k);font:inherit;color:var(--k);background:#fff;border-radius:0}
+textarea{resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips button{padding:6px 12px;border:3px solid var(--k);background:#fff;font:700 .9rem system-ui;cursor:pointer;color:var(--k)}
+.chips button[aria-pressed=true]{background:var(--bl);color:#fff;box-shadow:3px 3px 0 var(--k)}
+button{font:inherit}
+.big{background:var(--pk);color:var(--k);border:3px solid var(--k);box-shadow:5px 5px 0 var(--k);padding:12px 20px;font:800 1.1rem var(--hd);cursor:pointer;transition:transform .1s,box-shadow .1s}
+.big:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--k)}
+.big:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--k)}
+.sm{background:#fff;color:var(--k);border:2px solid var(--k);padding:4px 10px;font-weight:700;font-size:.85rem;cursor:pointer}
+.sm:hover{background:var(--y)}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:center}
+.tg{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:.9rem;font-weight:600}
+.tg label{display:flex;gap:6px;align-items:center;margin:0}
+.tg input{width:auto}
+:focus-visible{outline:4px solid var(--pk);outline-offset:2px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.phone{background:#fff;color:var(--k);border:3px solid var(--k);border-radius:30px;box-shadow:8px 8px 0 var(--k);padding:16px;margin-bottom:22px;max-height:560px;overflow:auto}
+.tp{display:flex;gap:10px}
+.ac{display:flex;flex-direction:column;align-items:center}
+.av{width:36px;height:36px;border-radius:50%;background:var(--bl);color:#fff;display:grid;place-items:center;font:800 1rem var(--hd);flex:none}
+.vl{flex:1;width:3px;background:#d4d4e0;margin:4px 0;border-radius:2px}
+.bd{flex:1;min-width:0;padding-bottom:14px}
+.tx{white-space:pre-wrap;word-break:break-word;font-size:.95rem}
+.ln{color:#1f6feb}
+.sc{display:flex;gap:16px;align-items:center}
+#ring{--p:0;width:90px;height:90px;border-radius:50%;background:conic-gradient(var(--bl) calc(var(--p)*1%),#e3e3ee 0);display:grid;place-items:center;flex:none}
+#ring div{width:68px;height:68px;border-radius:50%;background:#fff;display:grid;place-items:center;font:800 1.6rem var(--hd)}
+#verdict{font:800 1.05rem var(--hd)}
+#tips{font-size:.85rem;color:#444}
+.dr{border:3px solid var(--k);padding:10px;margin:12px 0;background:#fff}
+.dr b{font-size:.85rem}
+.dr textarea{min-height:130px;border-width:2px;margin-top:6px}
+.bar{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.bar span{margin-right:auto;font-size:.85rem;font-weight:700}
+.over{color:#d00}
+.lk{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #ddd;font-size:.9rem;align-items:center}
+.lk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:auto}
+details{margin-top:16px;border:2px dashed #999;padding:8px 10px}
+summary{cursor:pointer;font-weight:700;font-size:.9rem}
+#msg{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--k);color:#fff;border:3px solid var(--y);padding:8px 18px;font-weight:800;transition:transform .25s;z-index:9}
+#msg.on{transform:translateX(-50%)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><main>
+<header><div class="logo">Post Studio</div><div class="stk">Thread Builder · free</div></header>
+<h1>Turn history into threads people can't stop reading.</h1>
+<div id="reel" aria-live="polite">Every great thread is a story with a missing piece.</div>
+
+<div class="grid"><div>
+<section class="card">
+<h2>1. Give it the story</h2>
+<p class="hp">Your timeline is the story. The tool wraps it in a thread: hook, link, chapters, payoff.</p>
+<div class="acts" style="margin:0 0 4px"><button class="sm" id="ex">Try the Arsenal example</button></div>
+<label for="topic">Story title</label>
+<input id="topic" placeholder="e.g. Arsenal's Invincibles">
+<label for="tl">Timeline, one event per line: year | what happened (2 to 8 lines, oldest first)</label>
+<textarea id="tl" rows="7" placeholder="1996 | Arsène Wenger arrives from Japan&#10;1998 | He wins the league and cup double&#10;2004 | His team finishes the season unbeaten"></textarea>
+<label for="tw">The twist or payoff (the surprising line you save for the end)</label>
+<textarea id="tw" rows="2" placeholder="The man they laughed at built a team that never lost."></textarea>
+<div class="row"><div><label for="prod">What you're promoting</label><input id="prod" placeholder="e.g. Arsenal home jersey"></div>
+<div><label>Language</label><div class="chips" data-g="lang"><button data-v="ms" aria-pressed="true">BM</button><button data-v="en" aria-pressed="false">English</button></div></div></div>
+<label for="link">Affiliate link (goes in post 2)</label>
+<input id="link" placeholder="https://..." inputmode="url">
+<select id="pick" aria-label="Saved links" style="margin-top:8px"><option value="">Or pick from My links</option></select>
+<div class="tg"><label><input type="checkbox" id="emo" checked>Emoji</label><label><input type="checkbox" id="ad" checked>#ad disclosure</label></div>
+<div class="acts"><button class="big" id="go">Build my thread</button><button class="sm" id="ask">Ask Claude to write it</button></div>
+<details><summary>Already have a thread from Claude? Paste it here</summary>
+<p class="hp" style="margin-top:8px">Separate each post with a line containing only ---</p>
+<textarea id="imp" rows="5" aria-label="Paste thread"></textarea><div class="acts" style="margin-top:8px"><button class="sm" id="ld">Load into editor</button></div></details>
+</section>
+
+<section class="card" id="draft" hidden><h2>2. Edit your thread</h2><p class="hp">Post each one as a reply to the last. Link sits in post 2.</p>
+<div class="acts" style="margin:6px 0"><button class="sm" id="all">Copy whole thread</button><button class="sm" id="svt">Save thread</button></div><div id="ed"></div></section>
+</div>
+
+<aside>
+<div class="phone" id="pt"><div class="tx" style="color:#777">Your thread will appear here, just like it looks on the feed.</div></div>
+<div class="card"><div class="sc"><div id="ring"><div id="sn">0</div></div><div><div id="verdict">Hook score</div><div id="tips">Build a thread to score your first post.</div></div></div>
+<label for="hd">Preview name</label><input id="hd" value="@yourname"></div>
+<div class="card"><h2>My links</h2><p class="hp">Keep the products you promote here. Pick one later and the link and name fill in for you.</p>
+<div class="row"><input id="ln" placeholder="Product name" aria-label="Product name"><input id="lu" placeholder="https://..." aria-label="Link"></div><div class="acts" style="margin-top:8px"><button class="sm" id="add">Save</button></div><div id="ll"></div></div>
+<div class="card"><h2>Saved threads</h2><p class="hp">Finished threads you want to post later or reuse.</p><div id="vl"></div></div>
+</aside></div></main><div id="msg" role="status"></div>
+
+<script>
+const $=id=>document.getElementById(id),pick=a=>a[Math.random()*a.length|0];
+const S={lang:"ms"};let T=[];
+const HK={en:["{ye}\n\nNobody saw what came next.\n\nThe full story of {t} 🧵👇","Most people only know the ending of {t}.\n\nThe beginning is stranger.\n\nIt starts here: {ye}\n\nHere's how it unfolded 🧵","{t}: the part they never tell you.\n\n{ye}\n\nKeep reading 👇"],
+ms:["{ye}\n\nTak siapa sangka apa yang jadi lepas tu.\n\nKisah penuh {t} 🧵👇","Ramai cuma tahu penghujung {t}.\n\nPermulaannya lagi menarik.\n\nIa bermula di sini: {ye}\n\nNi macam mana ia berlaku 🧵","{t}: bahagian yang jarang orang cerita.\n\n{ye}\n\nBaca sampai habis 👇"]};
+const LP={en:"Before we go on: if {t} has you hooked, here's where I'd start: {p} 👇\n{l}\n\nNow, back to the story.",ms:"Sebelum sambung: kalau {t} dah buat kau teruja, ni tempat aku mula: {p} 👇\n{l}\n\nOk, sambung cerita."};
+const PD={en:"this",ms:"link ni"};
+const CN={en:["It began in {y}.","Then, {y}.","By {y},","Fast forward to {y}.","{y}. Everything shifted."],ms:["Semuanya bermula pada {y}.","Lepas tu, {y}.","Menjelang {y},","Pantas ke {y}.","{y}. Semuanya berubah."]};
+const BT={en:["Hold that thought 👇","It gets better.","But then 👇"],ms:["Simpan dulu fakta tu 👇","Lagi menarik lepas ni.","Tapi lepas tu 👇"]};
+const FN={en:"That's the story of {t}.\n\n{tw}Which moment hit you hardest? 👇",ms:"Itulah kisah {t}.\n\n{tw}Bahagian mana paling kena kat hati kau? 👇"};
+const AD={en:"#ad (affiliate link)",ms:"#ad (link affiliate)"};
+const EX={ms:{t:"Arsenal The Invincibles",tl:"1996 | Arsène Wenger tiba dari Jepun. Akhbar England gelar dia \"Arsène Who?\"\n1998 | Musim kedua, dia bawa Arsenal menang liga dan Piala FA sekali gus.\n2002 | Double sekali lagi, dan gelaran liga dimenangi di Old Trafford, padang pesaing utama.\n2004 | Arsenal tamatkan satu musim liga penuh tanpa kalah: 26 menang, 12 seri, 0 kalah.\n2004 | Rekod tanpa kalah sampai 49 perlawanan liga, sebelum tamat di Old Trafford pada Oktober.",tw:"Lelaki yang dahulu dipandang sinis, bina pasukan yang tak pernah kalah dalam satu musim liga penuh.",p:"jersi Arsenal"},
+en:{t:"Arsenal's Invincibles",tl:"1996 | Arsène Wenger arrives from Japan. English papers ask \"Arsène Who?\"\n1998 | In his second season he wins the league and FA Cup double.\n2002 | Another double, with the league clinched at Old Trafford, home of their rivals.\n2004 | Arsenal finish a whole league season unbeaten: 26 wins, 12 draws, 0 defeats.\n2004 | The unbeaten run reaches 49 league games before ending at Old Trafford in October.",tw:"The man they once doubted built a team that never lost a league game in a full season.",p:"Arsenal home jersey"}};
+const toast=t=>{const m=$("msg");m.textContent=t;m.className="on";clearTimeout(toast.t);toast.t=setTimeout(()=>m.className="",1500)};
+const cp=t=>navigator.clipboard.writeText(t).then(()=>toast("Copied 🔥"),()=>toast("Copy failed, select the text"));
+const fill=(s,o)=>s.replace(/\{(\w+)\}/g,(m,k)=>o[k]);
+const clean=s=>$("emo").checked?s:s.replace(/[\u{1F300}-\u{1FAFF}]/gu,"").replace(/ +\n/g,"\n").trim();
+const btn=(l,f)=>{const b=document.createElement("button");b.className="sm";b.textContent=l;b.onclick=f;return b};
+document.querySelectorAll(".chips").forEach(g=>g.onclick=e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));S.lang=b.dataset.v});
+function parse(){const ev=$("tl").value.split("\n").map(l=>l.trim()).filter(Boolean).slice(0,8).map(l=>{const i=l.indexOf("|");return i<0?{y:"",e:l}:{y:l.slice(0,i).trim(),e:l.slice(i+1).trim()}});
+ return{t:$("topic").value.trim(),ev,tw:$("tw").value.trim(),p:$("prod").value.trim(),l:$("link").value.trim()||"[PASTE YOUR LINK]"}}
+function hook(d){const e=d.ev[0];return clean(fill(pick(HK[S.lang]),{t:d.t,ye:e.y?e.y+": "+e.e:e.e}))}
+function build(){const d=parse();if(!d.t||d.ev.length<2){toast("Add a title and at least 2 timeline lines");return}
+ const lg=S.lang,n=d.ev.length,P=[hook(d)];
+ P.push(fill(LP[lg],{t:d.t,p:d.p||PD[lg],l:d.l})+($("ad").checked?"\n"+AD[lg]:""));
+ d.ev.forEach((x,i)=>P.push((x.y?fill(CN[lg][i%5],{y:x.y})+"\n\n":"")+x.e+(i<n-1?"\n\n"+BT[lg][i%3]:"")));
+ P.push(fill(FN[lg],{t:d.t,tw:d.tw?d.tw+"\n\n":""}));
+ T=P.map(clean);
+ const r=$("reel"),pool=[...HK.en,...HK.ms].map(h=>h.split("\n")[0]);let k=0;r.classList.add("spin");
+ const iv=setInterval(()=>{r.textContent=fill(pick(pool),{t:d.t,ye:d.ev[0].e});if(++k>10){clearInterval(iv);r.classList.remove("spin");r.textContent=T[0].split("\n")[0];render();if(innerWidth<860)$("draft").scrollIntoView({behavior:"smooth"})}},70)}
+function score(t){const h=t.split("\n")[0],l=h.toLowerCase(),tp=[];let s=35;
+ if(h.length>=20&&h.length<=100)s+=15;else tp.push("Keep the first line between 20 and 100 characters");
+ if(/\d/.test(t.split("\n").slice(0,5).join(" ")))s+=10;else tp.push("A year or number early on helps");
+ if(/nobody|never|wrong|secret|surpris|truth|why|weird|ending|beginning|stranger|never tell|tak siapa|rahsia|silap|terkejut|penghujung|permulaan|jarang|sangka/.test(l+" "+t.toLowerCase().slice(0,200)))s+=20;else tp.push("Add a curiosity line like nobody saw what came next");
+ if(/🧵|👇|👀/.test(t))s+=10;else tp.push("End with a cue like 👇 to pull people into the thread");
+ if(/https?:/.test(t)){s-=25;tp.push("Move the link out of post 1")}
+ if(/best ever|amazing|buy now|wajib beli|limited/.test(l)){s-=20;tp.push("Drop the hype words")}
+ return{s:Math.max(5,Math.min(100,s)),tp:tp.slice(0,2)}}
+let cur=0;
+function pv(){const h=$("hd").value||"@yourname",w=$("pt");w.innerHTML="";
+ T.forEach((x,i)=>{const r=document.createElement("div"),a=document.createElement("div"),av=document.createElement("div"),b=document.createElement("div"),n=document.createElement("b"),t=document.createElement("div");
+  r.className="tp";a.className="ac";av.className="av";av.textContent=(h.replace("@","")[0]||"Y").toUpperCase();a.append(av);
+  if(i<T.length-1){const l=document.createElement("div");l.className="vl";a.append(l)}
+  b.className="bd";n.textContent=h;t.className="tx";
+  x.split(/(https?:\/\/\S+|\[PASTE YOUR LINK\])/).forEach(p=>{if(/^(https?:|\[PASTE)/.test(p)){const s=document.createElement("span");s.className="ln";s.textContent=p;t.append(s)}else t.append(p)});
+  b.append(n,t);r.append(a,b);w.append(r)});
+ if(!T.length)return;const q=score(T[0]),from=cur,t0=performance.now();cur=q.s;
+ (function f(now){const k=Math.min(1,(now-t0)/450),v=from+(q.s-from)*k;$("ring").style.setProperty("--p",v);$("sn").textContent=Math.round(v);if(k<1)requestAnimationFrame(f)})(t0);
+ $("tips").textContent=q.tp.length?q.tp.join(". ")+".":"Strong hook. Post it.";
+ $("verdict").textContent=q.s>=80?"Scroll-stopper":q.s>=60?"Getting there":"Needs a sharper hook"}
+function render(){const w=$("ed");w.innerHTML="";
+ T.forEach((x,i)=>{const d=document.createElement("div"),lb=document.createElement("b"),ta=document.createElement("textarea"),c=document.createElement("span"),bar=document.createElement("div");
+  d.className="dr";lb.textContent=i===0?"Post 1 · Hook (no link)":i===1?"Post 2 · Link":i===T.length-1?"Post "+(i+1)+" · Payoff":"Post "+(i+1)+" · Chapter";
+  ta.value=x;ta.setAttribute("aria-label",lb.textContent);bar.className="bar";
+  const cn=()=>{c.textContent=ta.value.length+" / 500";c.className=ta.value.length>500?"over":""};
+  ta.oninput=()=>{T[i]=ta.value;cn();pv()};cn();
+  bar.append(c);if(i===0)bar.append(btn("🎲 Redo hook",()=>{const p=parse();if(p.ev.length){T[0]=hook(p);render()}}));
+  bar.append(btn("Copy",()=>cp(ta.value)));d.append(lb,ta,bar);w.append(d)});
+ $("draft").hidden=false;pv()}
+$("go").onclick=build;
+$("ex").onclick=()=>{const e=EX[S.lang];$("topic").value=e.t;$("tl").value=e.tl;$("tw").value=e.tw;$("prod").value=e.p};
+$("all").onclick=()=>cp(T.join("\n\n--- next post ---\n\n"));
+$("ld").onclick=()=>{const p=$("imp").value.split(/\n\s*-{3,}\s*\n/).map(s=>s.trim()).filter(Boolean);if(p.length<2){toast("Separate posts with a --- line");return}T=p;render()};
+$("ask").onclick=()=>{const d=parse();if(!d.t){toast("Add a story title first");$("topic").focus();return}
+ cp("Write a Threads thread in "+(S.lang==="ms"?"Bahasa Melayu":"English")+" telling the true story of: "+d.t+".\n"+(d.ev.length?"Use this timeline and add verified facts:\n"+$("tl").value.trim()+"\n":"Research the real, verifiable history in chronological order.\n")+
+ "Structure: Post 1 is a hook that builds curiosity and has NO link. Post 2 contains my affiliate link"+(d.p?" for "+d.p:"")+" ("+d.l+") with a natural bridge back into the story"+($("ad").checked?" and a #ad note":"")+". Then 4 to 6 chapter posts in chronological order, storytelling tone with tension and sensory detail. Last post is the payoff"+(d.tw?" ("+d.tw+")":"")+" plus a question. Max 500 characters per post. Separate posts with a line containing only ---. Flag any fact you are not sure about.");
+ window.open("https://claude.ai/new","_blank")};
+$("hd").oninput=pv;
+const ld=k=>{try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return[]}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let V=ld("ps3_threads"),L=ld("ps3_links");
+function drawV(){const w=$("vl");w.innerHTML="";if(!V.length){w.textContent="Nothing saved yet.";return}
+ V.forEach((x,i)=>{const r=document.createElement("div"),s=document.createElement("span");r.className="lk";s.textContent=x.t;r.append(s,btn("Open",()=>{T=x.p.slice();render()}),btn("✕",()=>{V.splice(i,1);sv("ps3_threads",V);drawV()}));w.append(r)})}
+$("svt").onclick=()=>{if(!T.length)return;V.unshift({t:$("topic").value.trim()||T[0].split("\n")[0].slice(0,40),p:T.slice()});sv("ps3_threads",V);drawV();toast("Thread saved")};
+function drawL(){const w=$("ll"),p=$("pick");w.innerHTML="";p.length=1;
+ L.forEach((x,i)=>{const r=document.createElement("div"),s=document.createElement("span");r.className="lk";s.textContent=x.n;r.append(s,btn("✕",()=>{L.splice(i,1);sv("ps3_links",L);drawL()}));w.append(r);const o=document.createElement("option");o.value=i;o.textContent=x.n;p.append(o)})}
+$("add").onclick=()=>{const n=$("ln").value.trim(),u=$("lu").value.trim();if(!n||!u){toast("Add a name and a link");return}L.push({n,u});sv("ps3_links",L);$("ln").value=$("lu").value="";drawL()};
+$("pick").onchange=e=>{const x=L[e.target.value];if(x){$("link").value=x.u;$("prod").value=x.n;toast("Link added")}};
+drawV();drawL();
+</script></body></html>
