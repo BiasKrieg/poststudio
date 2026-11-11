@@ -1,181 +1,218 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Post Studio</title>
+<title>Post Studio: Thread Builder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bl:#2a2cff;--y:#ffe14d;--pk:#ff7ac8;--k:#0a0a1f;--w:#fff;--hd:"Bricolage Grotesque","Arial Black",system-ui,sans-serif}
+:root{color-scheme:light;--bg:#efeee9;--card:#faf9f5;--tx:#0c0c0c;--mut:#6c6a63;--bd:#d6d3ca;--soft:#e7e5de;--ac:#d4ff3a;--gr:#d4ff3a;--gd:#3b3b36;--on:#0c0c0c;--lk:#1a56db;--er:#d6243b;--c0:#e4e2da;--c1:#ebffa6;--c2:#dcdad2;--c3:#f3d9cc;--b0:#0c0c0c;--b1:#a8d600;--b2:#6c6a63;--b3:#ff7a45;--hd:"Anton","Bebas Neue",Impact,"Arial Narrow",sans-serif;--bf:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif}
+:root[data-theme=dark]{color-scheme:dark;--bg:#0b0b0b;--card:#151515;--tx:#f1f0ea;--mut:#9a978d;--bd:#2a2a28;--soft:#1d1d1b;--gd:#d4ff3a;--lk:#8ab4ff;--er:#ff8a96;--c0:#1d1d1b;--c1:#242e08;--c2:#191917;--c3:#2a1d17;--b0:#f1f0ea;--b1:#d4ff3a;--b2:#9a978d;--b3:#ff7a45}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bl);background-image:radial-gradient(#ffffff22 1.5px,transparent 1.5px);background-size:22px 22px;color:var(--w);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:1060px;margin:auto;padding:18px 16px 70px}
-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.logo{font:800 1.4rem var(--hd);background:var(--y);color:var(--k);padding:4px 12px;border:3px solid var(--k);box-shadow:4px 4px 0 var(--k);transform:rotate(-2deg)}
-.stk{background:var(--pk);color:var(--k);font-weight:700;font-size:.85rem;padding:4px 12px;border:3px solid var(--k);border-radius:20px;transform:rotate(2deg)}
-h1{font:800 clamp(2.4rem,7vw,4.6rem)/.95 var(--hd);margin:26px 0 18px;letter-spacing:-.03em;max-width:12em}
-#reel{background:var(--y);color:var(--k);border:3px solid var(--k);box-shadow:8px 8px 0 var(--k);padding:18px 20px;font:800 clamp(1.2rem,3.4vw,1.9rem)/1.2 var(--hd);min-height:110px;display:flex;align-items:center;margin-bottom:26px}
-#reel.spin{filter:blur(1.2px);background:var(--pk)}
-.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:start}
-@media(max-width:860px){.grid{grid-template-columns:1fr}}
-.card{background:var(--w);color:var(--k);border:3px solid var(--k);box-shadow:6px 6px 0 var(--k);padding:18px;margin-bottom:22px}
-h2{font:800 1.25rem var(--hd);margin:0 0 6px}
-label{display:block;font-weight:700;font-size:.85rem;margin:14px 0 5px}
-input,select,textarea{width:100%;padding:10px;border:3px solid var(--k);font:inherit;color:var(--k);background:#fff;border-radius:0}
+html,body{overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 var(--bf);transition:background .25s,color .25s}
+main{max-width:1120px;margin:auto;padding:22px 20px 40px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:2px solid var(--tx)}
+.hr{display:flex;gap:12px;align-items:center}
+.logo{font:400 1.7rem var(--hd);letter-spacing:.02em;text-transform:uppercase}
+.stk{font-size:.75rem;color:var(--mut);text-transform:uppercase;letter-spacing:.12em}
+.hero{position:relative;padding:30px 0 6px}
+.rb{position:absolute;right:1%;top:20px;width:128px;height:128px;animation:sp 16s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.kick{font:600 .8rem var(--bf);text-transform:uppercase;letter-spacing:.18em;color:var(--mut);margin:0}
+h1{font:400 clamp(3.4rem,14vw,9.5rem)/.88 var(--hd);margin:10px 0 18px;text-transform:uppercase;letter-spacing:-.005em}
+h1 em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--tx)}
+.lead{font-size:1.1rem;color:var(--mut);margin:0 0 18px;max-width:30em}
+.bdg{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.bdg span{border:2px solid var(--tx);border-radius:30px;padding:3px 14px;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.mq{overflow:hidden;margin:0 -30px 30px;transform:rotate(-1deg);background:var(--ac);border-block:2px solid #0c0c0c}
+.mt{display:flex;gap:38px;width:max-content;padding:9px 0;font:400 1.25rem var(--hd);text-transform:uppercase;letter-spacing:.04em;color:#0c0c0c;animation:mq 26s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+#reel{background:var(--ac);color:#0c0c0c;border:2px solid var(--tx);border-radius:10px;padding:26px;font:400 clamp(1.4rem,3.4vw,2.3rem)/1.1 var(--hd);text-transform:uppercase;min-height:120px;display:flex;align-items:center;margin-bottom:34px;transition:transform .15s}
+#reel.spin{transform:skewX(-4deg);filter:contrast(1.2)}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;align-items:start}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.mq{margin:0 -20px 30px}.rb{width:84px;height:84px;top:6px}}
+.card{background:var(--card);border:2px solid var(--tx);border-radius:12px;padding:22px;margin-bottom:26px}
+h2{font:400 1.7rem/1.1 var(--hd);text-transform:uppercase;margin:0 0 6px;letter-spacing:.01em}
+h2 i{font:700 .8rem var(--bf);background:var(--tx);color:var(--bg);padding:3px 9px;border-radius:5px;margin-right:10px;vertical-align:middle;letter-spacing:.08em}
+.hp{font-size:.85rem;color:var(--mut);margin:0 0 6px}
+label{display:block;font-weight:700;font-size:.74rem;margin:16px 0 6px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em}
+input,select,textarea{width:100%;padding:11px 14px;border:2px solid var(--bd);border-radius:8px;font:inherit;color:var(--tx);background:var(--soft)}
+input:focus,select:focus,textarea:focus{border-color:var(--tx);outline:0}
 textarea{resize:vertical}
+::placeholder{color:var(--mut);opacity:.7}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
-.chips button{padding:6px 12px;border:3px solid var(--k);background:#fff;font:700 .9rem system-ui;cursor:pointer;color:var(--k)}
-.chips button[aria-pressed=true]{background:var(--bl);color:#fff;box-shadow:3px 3px 0 var(--k)}
+.chips button{padding:6px 16px;border:2px solid var(--tx);border-radius:30px;background:transparent;font:700 .8rem var(--bf);text-transform:uppercase;letter-spacing:.05em;cursor:pointer;color:var(--tx);transition:transform .12s}
+.chips button:hover{transform:translateY(-2px)}
+.chips button[aria-pressed=true]{background:var(--ac);color:#0c0c0c}
 button{font:inherit}
-.big{background:var(--pk);color:var(--k);border:3px solid var(--k);box-shadow:5px 5px 0 var(--k);padding:12px 20px;font:800 1.1rem var(--hd);cursor:pointer;transition:transform .1s,box-shadow .1s}
-.big:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--k)}
-.big:active{transform:translate(5px,5px);box-shadow:0 0 0 var(--k)}
-.sm{background:#fff;color:var(--k);border:2px solid var(--k);padding:4px 10px;font-weight:700;font-size:.85rem;cursor:pointer}
-.sm:hover{background:var(--y)}
-.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-.tg{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:.9rem;font-weight:600}
-.tg label{display:flex;gap:6px;align-items:center;margin:0;font-size:.9rem}
+.big{background:var(--ac);color:#0c0c0c;border:2px solid var(--tx);border-radius:40px;box-shadow:4px 4px 0 var(--tx);padding:12px 30px;font:400 1.15rem var(--hd);text-transform:uppercase;letter-spacing:.04em;cursor:pointer;transition:transform .12s,box-shadow .12s}
+.big:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--tx)}
+.big:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--tx)}
+.sm{background:transparent;color:var(--tx);border:2px solid var(--tx);border-radius:30px;padding:4px 14px;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;transition:background .12s}
+.sm:hover{background:var(--ac);color:#0c0c0c}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;align-items:center}
+.tg{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:.88rem}
+.tg label{display:flex;gap:6px;align-items:center;margin:0;color:var(--tx);text-transform:none;letter-spacing:0;font-size:.88rem}
 .tg input{width:auto}
-:focus-visible{outline:4px solid var(--pk);outline-offset:2px}
-.phone{background:#fff;color:var(--k);border:3px solid var(--k);border-radius:30px;box-shadow:8px 8px 0 var(--k);padding:16px;margin-bottom:22px}
-.who{display:flex;gap:10px;align-items:center}
-#av{width:42px;height:42px;border-radius:50%;background:var(--bl);color:#fff;display:grid;place-items:center;font:800 1.1rem var(--hd)}
-#pn{font-weight:800}
-#pb{white-space:pre-wrap;margin:10px 0;word-break:break-word}
-.ln{color:#1f6feb}
-.fk{display:flex;gap:18px;font-size:.85rem;color:#666}
-.sc{display:flex;gap:16px;align-items:center}
-#ring{--p:0;width:96px;height:96px;border-radius:50%;background:conic-gradient(var(--bl) calc(var(--p)*1%),#e3e3ee 0);display:grid;place-items:center;flex:none}
-#ring div{width:72px;height:72px;border-radius:50%;background:#fff;display:grid;place-items:center;font:800 1.7rem var(--hd)}
-#verdict{font:800 1.1rem var(--hd)}
-#tips{font-size:.88rem;color:#444}
-.dr{border:3px solid var(--k);padding:10px;margin:12px 0;cursor:pointer;background:#fff}
-.dr.sel{background:#fff6c2;box-shadow:5px 5px 0 var(--pk)}
-.dr textarea{min-height:140px;border-width:2px}
-.bar{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
-.bar span{margin-right:auto;font-size:.85rem;font-weight:700}
-.over{color:#d00}
-.pk{border-bottom:2px dashed #bbb;padding:10px 0}
-.pk pre{white-space:pre-wrap;font:inherit;margin:4px 0 8px}
-.lk{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid #ddd;font-size:.9rem}
-.lk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:focus-visible{outline:3px solid var(--lk);outline-offset:2px}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-#msg{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--k);color:#fff;border:3px solid var(--y);padding:8px 18px;font-weight:800;transition:transform .25s}
+.phone{background:var(--card);border:2px solid var(--tx);border-radius:30px;padding:18px;margin-bottom:26px;max-height:560px;overflow:auto}
+.tp{display:flex;gap:10px}
+.ac{display:flex;flex-direction:column;align-items:center}
+.av{width:38px;height:38px;border-radius:50%;background:var(--ac);color:#0c0c0c;border:2px solid var(--tx);display:grid;place-items:center;font:400 1.1rem var(--hd);flex:none}
+.vl{flex:1;width:2px;background:var(--bd);margin:4px 0}
+.bd{flex:1;min-width:0;padding-bottom:14px}
+.tx{white-space:pre-wrap;word-break:break-word;font-size:.95rem}
+.ln{color:var(--lk)}
+.sc{display:flex;gap:16px;align-items:center}
+#ring{--p:0;width:92px;height:92px;border-radius:50%;background:conic-gradient(var(--tx) 0,var(--ac) calc(var(--p)*1%),var(--soft) 0);display:grid;place-items:center;flex:none}
+#ring div{width:70px;height:70px;border-radius:50%;background:var(--card);display:grid;place-items:center;font:400 1.8rem var(--hd)}
+#verdict{font:400 1.3rem var(--hd);text-transform:uppercase}
+#tips{font-size:.85rem;color:var(--mut)}
+.dr{border:2px solid var(--tx);border-left-width:10px;border-radius:10px;padding:14px;margin:14px 0}
+.k0{background:var(--c0);border-left-color:var(--b0)}.k1{background:var(--c1);border-left-color:var(--b1)}.k2{background:var(--c2);border-left-color:var(--b2)}.k3{background:var(--c3);border-left-color:var(--b3)}
+.dr b{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em}
+.dr textarea{min-height:130px;margin-top:6px;background:var(--card)}
+.bar{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.bar span{margin-right:auto;font-size:.8rem;color:var(--mut);font-weight:700}
+.over{color:var(--er)!important;font-weight:800}
+.lk{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--bd);font-size:.9rem;align-items:center}
+.lk span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-right:auto}
+details{margin-top:16px;border:2px dashed var(--bd);border-radius:10px;padding:8px 12px}
+summary{cursor:pointer;font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em}
+footer{text-align:center;color:var(--mut);font-size:.78rem;padding:24px 0 40px;margin-top:20px;border-top:2px solid var(--tx);text-transform:uppercase;letter-spacing:.1em}
+#msg{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--ac);color:#0c0c0c;border:2px solid var(--tx);border-radius:30px;padding:8px 22px;font:400 1.05rem var(--hd);text-transform:uppercase;transition:transform .25s;z-index:9}
 #msg.on{transform:translateX(-50%)}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.cf{position:fixed;top:-30px;z-index:99;pointer-events:none;animation:fall 1.8s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style></head><body><main>
-<header><div class="logo">Post Studio</div><div class="stk">free, runs in your browser</div></header>
-<h1>Make people stop scrolling.</h1>
-<div id="reel" aria-live="polite">Nobody tells you this about your next big post.</div>
+<header><div class="logo">🌿 Post Studio</div><div class="hr"><span class="stk">Thread Builder · free</span><button class="sm" id="th" type="button" aria-label="Switch day or night mode">Night mode</button></div></header>
+<div class="hero"><svg class="rb" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="cp" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><circle cx="50" cy="50" r="48" fill="#d4ff3a" stroke="#0c0c0c" stroke-width="2"/><text font-size="9.5" font-family="Anton,Impact,sans-serif" fill="#0c0c0c" letter-spacing="1.5"><textPath href="#cp">FREE • THREAD BUILDER • NO SIGN-UP •</textPath></text><text x="50" y="60" text-anchor="middle" font-size="26">🧵</text></svg><p class="kick">Thread builder · history · storytelling</p><h1>Stories<br>that <em>hook</em></h1><p class="lead">Drop in a timeline. Get a thread nobody can scroll past.</p><div class="bdg"><span>Free</span><span>No sign-up</span><span>BM &amp; English</span><span>Day &amp; night</span><span>1 event = 1 post</span></div></div><div class="mq" aria-hidden="true"><div class="mt" id="mt"><span>🔥 Hook</span><span>🧵 Thread</span><span>👀 Curiosity</span><span>📖 Story</span><span>💥 Twist</span><span>✨ Payoff</span><span>🎬 Plot twist</span><span>🔗 Link</span></div></div>
+<div id="reel" aria-live="polite">Every great thread is a story with a missing piece.</div>
 
 <div class="grid"><div>
 <section class="card">
-<h2>1. Feed the machine</h2>
-<label for="topic">Topic</label>
-<input id="topic" placeholder="Arsenal's title race, an air fryer, a Raspberry Pi...">
-<label for="angle">Your angle (optional, this makes it sound like you)</label>
-<textarea id="angle" rows="2" placeholder="Saka's work rate beats most midfielders"></textarea>
-<label>Style</label>
-<div class="chips" data-g="form">
-<button data-v="curiosity" aria-pressed="true">Curiosity</button><button data-v="hot" aria-pressed="false">Hot take</button><button data-v="story" aria-pressed="false">Story</button><button data-v="list" aria-pressed="false">List</button><button data-v="cliff" aria-pressed="false">Cliffhanger</button><button data-v="contra" aria-pressed="false">Contrarian</button><button data-v="mix" aria-pressed="false">Surprise me</button></div>
-<div class="row"><div><label>Platform</label>
-<div class="chips" data-g="plat"><button data-v="500" aria-pressed="true">Threads</button><button data-v="280" aria-pressed="false">X</button><button data-v="0" aria-pressed="false">Facebook</button></div></div>
-<div><label>Language</label>
-<div class="chips" data-g="lang"><button data-v="ms" aria-pressed="true">BM</button><button data-v="en" aria-pressed="false">English</button></div></div></div>
-<label for="link">Affiliate link</label>
+<h2><i>01</i>Give it the story</h2>
+<p class="hp">Your timeline is the story. The tool wraps it in a thread: hook, link, chapters, payoff.</p>
+<div class="acts" style="margin:0 0 4px"><button class="sm" id="ex">Try the Arsenal example</button></div>
+<label for="topic">Story title</label>
+<input id="topic" placeholder="e.g. Arsenal's Invincibles">
+<label for="tl">Timeline, one event per line: year | what happened | why it matters (the last part is optional but makes each post fuller)</label>
+<textarea id="tl" rows="7" placeholder="1996 | Arsène Wenger arrives from Japan | Almost nobody in England knew his name&#10;2004 | His team finishes the season unbeaten | No other club had done it in the modern league"></textarea>
+<label for="tw">The twist or payoff (the surprising line you save for the end)</label>
+<textarea id="tw" rows="2" placeholder="The man they laughed at built a team that never lost."></textarea>
+<div class="row"><div><label for="prod">What you're promoting</label><input id="prod" placeholder="e.g. Arsenal home jersey"></div>
+<div><label>Language</label><div class="chips" data-g="lang"><button data-v="ms" aria-pressed="true">BM</button><button data-v="en" aria-pressed="false">English</button></div></div></div>
+<label>Hook flavour</label><div class="chips" data-g="hk"><button data-v="r" aria-pressed="true">Surprise me</button><button data-v="0" aria-pressed="false">Cliffhanger</button><button data-v="1" aria-pressed="false">Mystery</button><button data-v="2" aria-pressed="false">Straight talk</button></div>
+<label for="link">Affiliate link (goes in post 2)</label>
 <input id="link" placeholder="https://..." inputmode="url">
-<select id="pick" aria-label="Saved links" style="margin-top:8px"><option value="">Or pick a saved link</option></select>
-<div class="tg"><label><input type="checkbox" id="emo" checked>Emoji</label><label><input type="checkbox" id="ad" checked>#ad disclosure</label><label><input type="checkbox" id="tag">Topic tag</label></div>
-<div class="acts"><button class="big" id="spin">Spin 3 posts</button><button class="big" id="pk" style="background:var(--y)">7-day pack</button><button class="sm" id="ask">Copy prompt for Claude</button></div>
+<select id="pick" aria-label="Saved links" style="margin-top:8px"><option value="">Or pick from My links</option></select>
+<div class="tg"><label><input type="checkbox" id="emo" checked>Emoji</label><label><input type="checkbox" id="ad" checked>#ad disclosure</label></div>
+<div class="acts"><button class="big" id="go">Build my thread</button><button class="sm" id="ask">Ask Claude to write it</button></div>
+<details><summary>Already have a thread from Claude? Paste it here</summary>
+<p class="hp" style="margin-top:8px">Separate each post with a line containing only ---</p>
+<textarea id="imp" rows="5" aria-label="Paste thread"></textarea><div class="acts" style="margin-top:8px"><button class="sm" id="ld">Load into editor</button></div></details>
 </section>
 
-<section class="card" id="drafts" hidden><h2>2. Pick your favourite</h2><p style="margin:0;font-size:.9rem">Click a draft to preview it. Edit freely, the score updates live.</p><div id="dl"></div></section>
-<section class="card" id="pack" hidden><h2>Your week</h2><div class="acts" style="margin:6px 0"><button class="sm" id="packall">Copy all 7</button></div><div id="pl"></div></section>
+<section class="card" id="draft" hidden><h2><i>02</i>Edit your thread</h2><p class="hp">Post each one as a reply to the last. Link sits in post 2. GIFs cannot live inside the text: tap a GIF button to search Giphy, then attach the GIF in the Threads composer.</p>
+<div class="acts" style="margin:6px 0"><button class="sm" id="all">Copy whole thread</button><button class="sm" id="emo2">Add emoji</button><button class="sm" id="svt">Save thread</button></div><div id="ed"></div></section>
 </div>
 
 <aside>
-<div class="phone"><div class="who"><div id="av">Y</div><div><div id="pn">@yourname</div><div style="font-size:.8rem;color:#777">just now</div></div></div>
-<div id="pb">Your post shows up here, exactly how it will look on the feed.</div>
-<div class="fk"><span>♡ 128</span><span>💬 24</span><span>↻ 9</span></div></div>
-<div class="card"><div class="sc"><div id="ring"><div id="sn">0</div></div><div><div id="verdict">Scroll-stop score</div><div id="tips">Spin a post to see how strong the hook is.</div></div></div>
-<label for="hd">Preview handle</label><input id="hd" value="@yourname"></div>
-<div class="card"><h2>Vault</h2><div id="vl"><span style="font-size:.9rem">Star a draft to keep it here.</span></div></div>
-<div class="card"><h2>Link library</h2><div class="row"><input id="ln" placeholder="Name" aria-label="Link name"><input id="lu" placeholder="https://..." aria-label="Link URL"></div><div class="acts" style="margin-top:8px"><button class="sm" id="add">Save link</button></div><div id="ll"></div></div>
-</aside></div></main><div id="msg" role="status"></div>
+<div class="phone" id="pt"><div class="tx" style="color:#777">Your thread will appear here, just like it looks on the feed.</div></div>
+<div class="card"><div class="sc"><div id="ring"><div id="sn">0</div></div><div><div id="verdict">Hook score</div><div id="tips">Build a thread to score your first post.</div></div></div>
+<label for="hd">Preview name</label><input id="hd" value="@yourname"></div>
+<div class="card"><h2>My links</h2><p class="hp">Keep the products you promote here. Pick one later and the link and name fill in for you.</p>
+<div class="row"><input id="ln" placeholder="Product name" aria-label="Product name"><input id="lu" placeholder="https://..." aria-label="Link"></div><div class="acts" style="margin-top:8px"><button class="sm" id="add">Save</button></div><div id="ll"></div></div>
+<div class="card"><h2>Saved threads</h2><p class="hp">Finished threads you want to post later or reuse.</p><div id="vl"></div></div>
+</aside></div><footer>Made with ☕ and curiosity · your data stays in your browser</footer></main><div id="msg" role="status"></div>
 
 <script>
 const $=id=>document.getElementById(id),pick=a=>a[Math.random()*a.length|0];
-const S={form:"curiosity",plat:500,lang:"ms"};
-const H={en:{curiosity:["Nobody tells you this about {t}.","I spent a week on {t}. One thing surprised me.","Most people get {t} wrong. Here's why.","The real reason {t} matters isn't what you think."],
-hot:["Unpopular opinion: {t} is overrated.","Hot take on {t}: most people do it backwards.","Stop overthinking {t}. Do this instead."],
-story:["Last month {t} changed how I see things.","I used to ignore {t}. Then this happened.","Funny story about {t}..."],
-list:["3 things about {t} I wish I knew sooner:","{t}: 3 quick lessons.","Before you try {t}, read this."],
-cliff:["I almost didn't post this about {t}...","Wait till you see what happened with {t}.","{t}. Read to the end, it gets weird."],
-contra:["Everyone says {t} is the answer. They're missing something.","What if {t} isn't the problem?","You don't need more {t}. You need this."]},
-ms:{curiosity:["Takde orang bagitahu ni pasal {t}.","Seminggu aku kaji {t}. Ada satu benda buat aku terkejut.","Ramai silap pasal {t}. Ni sebabnya.","Sebab sebenar {t} penting bukan seperti yang kau sangka."],
-hot:["Pendapat tak popular: {t} ni overrated.","Hot take pasal {t}: ramai buat terbalik.","Jangan overthink {t}. Buat ni je."],
-story:["Bulan lepas {t} ubah cara aku tengok benda.","Dulu aku abaikan {t}. Lepas tu jadi benda ni.","Cerita kelakar pasal {t}..."],
-list:["3 benda pasal {t} yang aku harap tahu awal:","{t}: 3 pengajaran ringkas.","Sebelum cuba {t}, baca ni dulu."],
-cliff:["Aku hampir tak post benda ni pasal {t}...","Tunggu sampai habis, {t} ni pelik sikit.","Baca sampai habis. {t} ada twist."],
-contra:["Semua orang kata {t} jawapannya. Diorang tertinggal satu benda.","Kalau {t} bukan masalahnya?","Kau tak perlu lebih {t}. Kau perlu ni."]}};
-const B={en:["Small detail, big difference. Most only notice it too late.","I didn't expect this, but the more I looked, the more it made sense.","Here's the part nobody mentions."],ms:["Benda kecil, beza besar. Ramai sedar bila dah terlambat.","Aku tak sangka, tapi makin tengok makin masuk akal.","Ni bahagian yang orang jarang sebut."]};
-const C={en:["Full details here 👇","Link if you want to check it out 👇","Agree? Link below 👇"],ms:["Details penuh kat sini 👇","Link kalau nak tengok 👇","Setuju tak? Link kat bawah 👇"]};
+const S={lang:"ms"};let T=[];
+const HK={en:["{ye}\n\nNobody saw what came next.\n\nThe full story of {t} 🧵👇","Most people only know the ending of {t}.\n\nThe beginning is stranger.\n\nIt starts here: {ye}\n\nHere's how it unfolded 🧵","{t}: the part they never tell you.\n\n{ye}\n\nKeep reading 👇"],
+ms:["{ye}\n\nTak siapa sangka apa yang jadi lepas tu.\n\nKisah penuh {t} 🧵👇","Ramai cuma tahu penghujung {t}.\n\nPermulaannya lagi menarik.\n\nIa bermula di sini: {ye}\n\nNi macam mana ia berlaku 🧵","{t}: bahagian yang jarang orang cerita.\n\n{ye}\n\nBaca sampai habis 👇"]};
+const LP={en:"Before we go on: if {t} has you hooked, here's where I'd start: {p} 👇\n{l}\n\nNow, back to the story.",ms:"Sebelum sambung: kalau {t} dah buat kau teruja, ni tempat aku mula: {p} 👇\n{l}\n\nOk, sambung cerita."};
+const PD={en:"this",ms:"link ni"};
+const CN={en:["It began in {y}.","Then, {y}.","By {y},","Fast forward to {y}.","{y}. Everything shifted."],ms:["Semuanya bermula pada {y}.","Lepas tu, {y}.","Menjelang {y},","Pantas ke {y}.","{y}. Semuanya berubah."]};
+const BT={en:["Hold that thought 👇","It gets better.","But then 👇"],ms:["Simpan dulu fakta tu 👇","Lagi menarik lepas ni.","Tapi lepas tu 👇"]};
+const FN={en:"That's the story of {t}.\n\n{tw}Which moment hit you hardest? 👇",ms:"Itulah kisah {t}.\n\n{tw}Bahagian mana paling kena kat hati kau? 👇"};
+const CE=["📍","🔎","💡","🎬","🔥","🌍","🏆","🧩"];
+const gf=i=>i===0?"shocked":i===1?"pointing down":i===T.length-1?"thinking":["plot twist","wait what","gasp","dramatic","mic drop"][(i-2)%5];
 const AD={en:"#ad (affiliate link)",ms:"#ad (link affiliate)"};
-const E={curiosity:"👀",hot:"🔥",story:"📖",list:"✅",cliff:"😳",contra:"🙅"};
+const EX={ms:{t:"Arsenal The Invincibles",tl:"1996 | Arsène Wenger tiba dari Jepun. Akhbar England gelar dia \"Arsène Who?\" | Hampir tiada siapa di England kenal dia, dan kaedah diet serta latihannya dianggap pelik.\n1998 | Musim kedua, dia bawa Arsenal menang liga dan Piala FA sekali gus. | Kemenangan itu menutup mulut mereka yang meragui dia.\n2002 | Double sekali lagi, dan gelaran liga dimenangi di Old Trafford, padang pesaing utama. | Menang di kandang rival membuatkan ia lebih manis.\n2004 | Arsenal tamatkan satu musim liga penuh tanpa kalah: 26 menang, 12 seri, 0 kalah. | Mereka digelar The Invincibles.\n2004 | Rekod tanpa kalah sampai 49 perlawanan liga, sebelum tamat di Old Trafford pada Oktober. | Tempat yang sama mereka menang liga dua tahun sebelumnya.",tw:"Lelaki yang dahulu dipandang sinis, bina pasukan yang tak pernah kalah dalam satu musim liga penuh.",p:"jersi Arsenal"},
+en:{t:"Arsenal's Invincibles",tl:"1996 | Arsène Wenger arrives from Japan. English papers ask \"Arsène Who?\" | Almost nobody in England knew him, and his diet and training methods seemed strange.\n1998 | In his second season he wins the league and FA Cup double. | It silenced the doubters.\n2002 | Another double, with the league clinched at Old Trafford, home of their rivals. | Winning at a rival's ground made it sweeter.\n2004 | Arsenal finish a whole league season unbeaten: 26 wins, 12 draws, 0 defeats. | They were nicknamed The Invincibles.\n2004 | The unbeaten run reaches 49 league games before ending at Old Trafford in October. | The same ground where they had won the league two years earlier.",tw:"The man they once doubted built a team that never lost a league game in a full season.",p:"Arsenal home jersey"}};
 const toast=t=>{const m=$("msg");m.textContent=t;m.className="on";clearTimeout(toast.t);toast.t=setTimeout(()=>m.className="",1500)};
 const cp=t=>navigator.clipboard.writeText(t).then(()=>toast("Copied 🔥"),()=>toast("Copy failed, select the text"));
-document.querySelectorAll(".chips").forEach(g=>g.onclick=e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));S[g.dataset.g]=g.dataset.g==="plat"?+b.dataset.v:b.dataset.v;document.querySelectorAll(".dr textarea").forEach(t=>t.dispatchEvent(new Event("input")))});
-function topic(){const t=$("topic").value.trim();if(!t){toast("Add a topic first");$("topic").focus()}return t}
-function mk(style,t){const lg=S.lang,st=style==="mix"?pick(Object.keys(H.en)):style,an=$("angle").value.trim(),lk=$("link").value.trim();
- let s=($("emo").checked?E[st]+" ":"")+pick(H[lg][st]).replace("{t}",t)+"\n\n"+(an||pick(B[lg]))+"\n\n"+pick(C[lg]);
- if(lk)s+="\n"+lk;
- if($("tag").checked){const w=t.split(/\s+/).find(x=>x.length>3);if(w)s+="\n#"+w.toLowerCase().replace(/[^a-z0-9]/g,"")}
- if($("ad").checked)s+="\n"+AD[lg];return s}
+const fill=(s,o)=>s.replace(/\{(\w+)\}/g,(m,k)=>o[k]);
+const clean=s=>$("emo").checked?s:s.replace(/[\u{1F300}-\u{1FAFF}]/gu,"").replace(/ +\n/g,"\n").trim();
+const btn=(l,f)=>{const b=document.createElement("button");b.className="sm";b.textContent=l;b.onclick=f;return b};
+document.querySelectorAll(".chips").forEach(g=>g.onclick=e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));S[g.dataset.g]=b.dataset.v});
+function parse(){const ev=$("tl").value.split("\n").map(l=>l.trim()).filter(Boolean).slice(0,8).map(l=>{const a=l.split("|").map(z=>z.trim());return a.length<2?{y:"",e:l,d:""}:{y:a[0],e:a[1],d:a.slice(2).join(" | ")}});
+ return{t:$("topic").value.trim(),ev,tw:$("tw").value.trim(),p:$("prod").value.trim(),l:$("link").value.trim()||"[PASTE YOUR LINK]"}}
+function hook(d){const e=d.ev[0];return clean(fill(HK[S.lang][+S.hk]||pick(HK[S.lang]),{t:d.t,ye:e.y?e.y+": "+e.e:e.e}))}
+function build(){const d=parse();if(!d.t||d.ev.length<2){toast("Add a title and at least 2 timeline lines");return}
+ const lg=S.lang,n=d.ev.length,P=[hook(d)];
+ P.push(fill(LP[lg],{t:d.t,p:d.p||PD[lg],l:d.l})+($("ad").checked?"\n"+AD[lg]:""));
+ d.ev.forEach((x,i)=>P.push(CE[i%8]+" "+(x.y?fill(CN[lg][i%5],{y:x.y})+"\n\n":"")+x.e+(x.d?"\n\n"+x.d:"")+(i<n-1?"\n\n"+BT[lg][i%3]:"")));
+ P.push(fill(FN[lg],{t:d.t,tw:d.tw?d.tw+"\n\n":""}));
+ T=P.map(clean);
+ const r=$("reel"),pool=[...HK.en,...HK.ms].map(h=>h.split("\n")[0]);let k=0;r.classList.add("spin");
+ const iv=setInterval(()=>{r.textContent=fill(pick(pool),{t:d.t,ye:d.ev[0].e});if(++k>10){clearInterval(iv);r.classList.remove("spin");r.textContent=T[0].split("\n")[0];render();pop();if(innerWidth<860)$("draft").scrollIntoView({behavior:"smooth"})}},70)}
 function score(t){const h=t.split("\n")[0],l=h.toLowerCase(),tp=[];let s=35;
- if(h.length>=20&&h.length<=95)s+=15;else tp.push("Keep the first line between 20 and 95 characters");
- if(/\d/.test(h))s+=8;else tp.push("A number in the hook helps");
- if(/\?|\.\.\./.test(h))s+=10;
- if(/nobody|never|wrong|secret|surpris|truth|why|weird|takde|rahsia|silap|terkejut|sebab|pelik|twist|tak sangka|missing/.test(l))s+=15;else tp.push("Add a curiosity word like nobody, wrong or why");
- if(/\b(i|my|aku|saya)\b/.test(l))s+=10;else tp.push("Make it personal with I or my");
- if(/👀|🔥|😳|📖|✅|🙅|👇/.test(t))s+=5;
+ if(h.length>=20&&h.length<=100)s+=15;else tp.push("Keep the first line between 20 and 100 characters");
+ if(/\d/.test(t.split("\n").slice(0,5).join(" ")))s+=10;else tp.push("A year or number early on helps");
+ if(/nobody|never|wrong|secret|surpris|truth|why|weird|ending|beginning|stranger|never tell|tak siapa|rahsia|silap|terkejut|penghujung|permulaan|jarang|sangka/.test(l+" "+t.toLowerCase().slice(0,200)))s+=20;else tp.push("Add a curiosity line like nobody saw what came next");
+ if(/🧵|👇|👀/.test(t))s+=10;else tp.push("End with a cue like 👇 to pull people into the thread");
+ if(/https?:/.test(t)){s-=25;tp.push("Move the link out of post 1")}
  if(/best ever|amazing|buy now|wajib beli|limited/.test(l)){s-=20;tp.push("Drop the hype words")}
  return{s:Math.max(5,Math.min(100,s)),tp:tp.slice(0,2)}}
 let cur=0;
-function show(t){$("pn").textContent=$("hd").value||"@yourname";$("av").textContent=($("hd").value.replace("@","")||"y")[0].toUpperCase();
- const b=$("pb");b.textContent="";t.split(/(https?:\/\/\S+)/).forEach(p=>{if(/^https?:/.test(p)){const s=document.createElement("span");s.className="ln";s.textContent=p;b.append(s)}else b.append(p)});
- const r=score(t),from=cur,t0=performance.now();cur=r.s;
- (function f(now){const k=Math.min(1,(now-t0)/450),v=from+(r.s-from)*k;$("ring").style.setProperty("--p",v);$("sn").textContent=Math.round(v);if(k<1)requestAnimationFrame(f)})(t0);
- $("tips").textContent=r.tp.length?r.tp.join(". ")+".":"Strong hook. Post it.";
- $("verdict").textContent=r.s>=80?"Scroll-stopper":r.s>=60?"Getting there":"Needs a sharper hook"}
-function count(ta,c){const n=ta.value.length;c.textContent=S.plat?n+" / "+S.plat:n+" chars";c.className=S.plat&&n>S.plat?"over":""}
-const btn=(l,f)=>{const b=document.createElement("button");b.className="sm";b.textContent=l;b.onclick=e=>{e.stopPropagation();f()};return b};
-function draft(txt,t){const d=document.createElement("div");d.className="dr";
- const ta=document.createElement("textarea");ta.value=txt;ta.setAttribute("aria-label","Draft");
- const c=document.createElement("span"),bar=document.createElement("div");bar.className="bar";
- const sel=()=>{document.querySelectorAll(".dr").forEach(x=>x.classList.remove("sel"));d.classList.add("sel");show(ta.value)};
- ta.oninput=()=>{count(ta,c);if(d.classList.contains("sel"))show(ta.value)};
- d.onclick=sel;ta.onfocus=sel;
- bar.append(c,btn("🎲 Redo",()=>{ta.value=mk(S.form,t);ta.oninput();sel()}),btn("★ Save",()=>{V.unshift(ta.value);saveV();drawV();toast("Saved to vault")}),btn("Copy",()=>cp(ta.value)));
- d.append(ta,bar);count(ta,c);return d}
-function spin(){const t=topic();if(!t)return;const pool=Object.values(H[S.lang]).flat(),r=$("reel");let n=0;r.classList.add("spin");
- const iv=setInterval(()=>{r.textContent=pick(pool).replace("{t}",t);if(++n>12){clearInterval(iv);r.classList.remove("spin");
-  const dl=$("dl");dl.innerHTML="";const ds=[0,1,2].map(()=>draft(mk(S.form,t),t));ds.forEach(x=>dl.append(x));
-  r.textContent=ds[0].querySelector("textarea").value.split("\n")[0];ds[0].click();$("drafts").hidden=false;
-  if(innerWidth<860)$("drafts").scrollIntoView({behavior:"smooth"})}},70)}
-$("spin").onclick=spin;
-$("pk").onclick=()=>{const t=topic();if(!t)return;const seq=["curiosity","hot","story","list","cliff","contra","mix"],w=$("pl"),all=[];w.innerHTML="";
- seq.forEach((st,i)=>{const x=mk(st,t);all.push(x);const r=document.createElement("div"),h=document.createElement("b"),p=document.createElement("pre");r.className="pk";h.textContent="Day "+(i+1);p.textContent=x;r.append(h,p,btn("Copy",()=>cp(x)));w.append(r)});
- $("packall").onclick=()=>cp(all.join("\n\n---\n\n"));$("pack").hidden=false;$("pack").scrollIntoView({behavior:"smooth"})};
-$("ask").onclick=()=>{const t=topic();if(!t)return;const an=$("angle").value.trim(),lk=$("link").value.trim();
- cp("Write 3 creative "+(S.plat===280?"X":S.plat===500?"Threads":"Facebook")+" posts in "+(S.lang==="ms"?"Bahasa Melayu":"English")+" about: "+t+".\n"+(an?"My angle: "+an+"\n":"")+"Style: "+S.form+". Make people curious in the first line, sound like a real person, no hype words.\n"+(S.plat?"Max "+S.plat+" characters each.\n":"")+(lk?"End with this link: "+lk+"\n":"")+($("ad").checked?"Add a short affiliate disclosure (#ad).":""));
+function pv(){const h=$("hd").value||"@yourname",w=$("pt");w.innerHTML="";
+ T.forEach((x,i)=>{const r=document.createElement("div"),a=document.createElement("div"),av=document.createElement("div"),b=document.createElement("div"),n=document.createElement("b"),t=document.createElement("div");
+  r.className="tp";a.className="ac";av.className="av";av.textContent=(h.replace("@","")[0]||"Y").toUpperCase();a.append(av);
+  if(i<T.length-1){const l=document.createElement("div");l.className="vl";a.append(l)}
+  b.className="bd";n.textContent=h;t.className="tx";
+  x.split(/(https?:\/\/\S+|\[PASTE YOUR LINK\])/).forEach(p=>{if(/^(https?:|\[PASTE)/.test(p)){const s=document.createElement("span");s.className="ln";s.textContent=p;t.append(s)}else t.append(p)});
+  b.append(n,t);r.append(a,b);w.append(r)});
+ if(!T.length)return;const q=score(T[0]),from=cur,t0=performance.now();cur=q.s;
+ (function f(now){const k=Math.min(1,(now-t0)/450),v=from+(q.s-from)*k;$("ring").style.setProperty("--p",v);$("sn").textContent=Math.round(v);if(k<1)requestAnimationFrame(f)})(t0);
+ $("tips").textContent=q.tp.length?q.tp.join(". ")+".":"Strong hook. Post it.";
+ $("verdict").textContent=q.s>=80?"Scroll-stopper":q.s>=60?"Getting there":"Needs a sharper hook"}
+function render(){const w=$("ed");w.innerHTML="";
+ T.forEach((x,i)=>{const d=document.createElement("div"),lb=document.createElement("b"),ta=document.createElement("textarea"),c=document.createElement("span"),bar=document.createElement("div");
+  d.className="dr k"+(i===0?0:i===1?1:i===T.length-1?3:2);lb.textContent=i===0?"Post 1 · Hook (no link)":i===1?"Post 2 · Link":i===T.length-1?"Post "+(i+1)+" · Payoff":"Post "+(i+1)+" · Chapter";
+  ta.value=x;ta.setAttribute("aria-label",lb.textContent);bar.className="bar";
+  const cn=()=>{c.textContent=ta.value.length+" / 500";c.className=ta.value.length>500?"over":""};
+  ta.oninput=()=>{T[i]=ta.value;cn();pv()};cn();
+  bar.append(c);if(i===0)bar.append(btn("🎲 Redo hook",()=>{const p=parse();if(p.ev.length){T[0]=hook(p);render()}}));
+  bar.append(btn("🎞 GIF: "+gf(i),()=>window.open("https://giphy.com/search/"+encodeURIComponent(gf(i)),"_blank")),btn("Copy",()=>cp(ta.value)));d.append(lb,ta,bar);w.append(d)});
+ $("draft").hidden=false;pv()}
+$("go").onclick=build;
+$("ex").onclick=()=>{const e=EX[S.lang];$("topic").value=e.t;$("tl").value=e.tl;$("tw").value=e.tw;$("prod").value=e.p};
+$("all").onclick=()=>cp(T.join("\n\n--- next post ---\n\n"));
+$("ld").onclick=()=>{const p=$("imp").value.split(/\n\s*-{3,}\s*\n/).map(s=>s.trim()).filter(Boolean);if(p.length<2){toast("Separate posts with a --- line");return}T=p;render()};
+$("ask").onclick=()=>{const d=parse();if(!d.t){toast("Add a story title first");$("topic").focus();return}
+ cp("Write a Threads thread in "+(S.lang==="ms"?"Bahasa Melayu":"English")+" telling the true story of: "+d.t+".\n"+(d.ev.length?"Use this timeline and add verified facts:\n"+$("tl").value.trim()+"\n":"Research the real, verifiable history in chronological order.\n")+
+ "Structure: Post 1 is a hook that builds curiosity and has NO link. Post 2 contains my affiliate link"+(d.p?" for "+d.p:"")+" ("+d.l+") with a natural bridge back into the story"+($("ad").checked?" and a #ad note":"")+". Then 4 to 6 chapter posts in chronological order, storytelling tone with tension and sensory detail. Last post is the payoff"+(d.tw?" ("+d.tw+")":"")+" plus a question. Use a few small emoji to keep it lively. Max 500 characters per post. Separate posts with a line containing only ---. Flag any fact you are not sure about.");
  window.open("https://claude.ai/new","_blank")};
-$("hd").oninput=()=>{const s=document.querySelector(".dr.sel textarea");if(s)show(s.value)};
+$("hd").oninput=pv;
 const ld=k=>{try{return JSON.parse(localStorage.getItem(k)||"[]")}catch(e){return[]}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
-let V=ld("ps2_vault"),L=ld("ps2_links");const saveV=()=>sv("ps2_vault",V),saveL=()=>sv("ps2_links",L);
-function drawV(){const w=$("vl");w.innerHTML="";if(!V.length){w.textContent="Star a draft to keep it here.";return}
- V.forEach((x,i)=>{const r=document.createElement("div");r.className="lk";const s=document.createElement("span");s.textContent=x.split("\n")[0];r.append(s,btn("Copy",()=>cp(x)),btn("✕",()=>{V.splice(i,1);saveV();drawV()}));w.append(r)})}
+let V=ld("ps3_threads"),L=ld("ps3_links");
+function drawV(){const w=$("vl");w.innerHTML="";if(!V.length){w.textContent="Nothing saved yet.";return}
+ V.forEach((x,i)=>{const r=document.createElement("div"),s=document.createElement("span");r.className="lk";s.textContent=x.t;r.append(s,btn("Open",()=>{T=x.p.slice();render()}),btn("✕",()=>{V.splice(i,1);sv("ps3_threads",V);drawV()}));w.append(r)})}
+$("svt").onclick=()=>{if(!T.length)return;V.unshift({t:$("topic").value.trim()||T[0].split("\n")[0].slice(0,40),p:T.slice()});sv("ps3_threads",V);drawV();toast("Thread saved")};
 function drawL(){const w=$("ll"),p=$("pick");w.innerHTML="";p.length=1;
- L.forEach((x,i)=>{const r=document.createElement("div");r.className="lk";const s=document.createElement("span");s.textContent=x.n;r.append(s,btn("✕",()=>{L.splice(i,1);saveL();drawL()}));w.append(r);const o=document.createElement("option");o.value=x.u;o.textContent=x.n;p.append(o)})}
-$("add").onclick=()=>{const n=$("ln").value.trim(),u=$("lu").value.trim();if(!n||!u){toast("Add a name and a link");return}L.push({n,u});saveL();$("ln").value=$("lu").value="";drawL()};
-$("pick").onchange=e=>{if(e.target.value){$("link").value=e.target.value;toast("Link added")}};
+ L.forEach((x,i)=>{const r=document.createElement("div"),s=document.createElement("span");r.className="lk";s.textContent=x.n;r.append(s,btn("✕",()=>{L.splice(i,1);sv("ps3_links",L);drawL()}));w.append(r);const o=document.createElement("option");o.value=i;o.textContent=x.n;p.append(o)})}
+$("add").onclick=()=>{const n=$("ln").value.trim(),u=$("lu").value.trim();if(!n||!u){toast("Add a name and a link");return}L.push({n,u});sv("ps3_links",L);$("ln").value=$("lu").value="";drawL()};
+$("pick").onchange=e=>{const x=L[e.target.value];if(x){$("link").value=x.u;$("prod").value=x.n;toast("Link added")}};
+$("emo2").onclick=()=>{if(!T.length)return;const r=/^[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u,n=T.length;T=T.map((x,i)=>r.test(x)?x:(i===0?"👀":i===1?"🔗":i===n-1?"💬":CE[(i-2)%8])+" "+x);render()};
+function pop(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const E=["🔥","✨","🧵","👀","💥","🎉","📖"];for(let i=0;i<26;i++){const e=document.createElement("span");e.className="cf";e.textContent=E[i%E.length];e.style.left=Math.random()*100+"vw";e.style.animationDelay=Math.random()*.5+"s";e.style.fontSize=16+Math.random()*18+"px";document.body.append(e);setTimeout(()=>e.remove(),2400)}}
+$("mt").innerHTML+=$("mt").innerHTML;
+function setTheme(t){document.documentElement.dataset.theme=t;$("th").textContent=t==="dark"?"Day mode":"Night mode";try{localStorage.setItem("ps3_theme",t)}catch(e){}}
+let t0=null;try{t0=localStorage.getItem("ps3_theme")}catch(e){}
+setTheme(t0||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
+$("th").onclick=()=>setTheme(document.documentElement.dataset.theme==="dark"?"light":"dark");
 drawV();drawL();
 </script></body></html>
