@@ -98,10 +98,14 @@ footer{text-align:center;color:var(--mut);font-size:.78rem;padding:24px 0 40px;m
 <div class="acts" style="margin:0 0 4px"><button class="sm" id="ex">Try the Arsenal example</button></div>
 <label for="topic">Story title</label>
 <input id="topic" placeholder="e.g. Arsenal's Invincibles">
+<div class="acts" style="margin:10px 0 0"><button class="sm" id="rs" type="button">Auto-research timeline</button><button class="sm" id="rc" type="button">Research with Claude</button><button class="sm" id="ai" type="button">✨ AI research &amp; write</button></div>
+<details id="aset"><summary>AI settings (free Gemini key)</summary><label for="gk">Gemini API key</label><input id="gk" type="password" autocomplete="off" placeholder="Paste your key"><label for="gm">Model</label><input id="gm" value="gemini-3.6-flash"><p class="hp" style="margin-top:8px">Get a free key at aistudio.google.com/apikey. It is saved only in this browser, never on GitHub. On the free tier Google may use prompts to improve its products, so keep private info out.</p></details>
 <label for="tl">Timeline, one event per line: year | what happened | why it matters (the last part is optional but makes each post fuller)</label>
 <textarea id="tl" rows="7" placeholder="1996 | Arsène Wenger arrives from Japan | Almost nobody in England knew his name&#10;2004 | His team finishes the season unbeaten | No other club had done it in the modern league"></textarea>
+<p class="hp" id="src"></p>
 <label for="tw">The twist or payoff (the surprising line you save for the end)</label>
 <textarea id="tw" rows="2" placeholder="The man they laughed at built a team that never lost."></textarea>
+<details><summary>Got a researched timeline from Claude? Paste it here</summary><textarea id="rin" rows="5" aria-label="Paste Claude research"></textarea><div class="acts" style="margin-top:8px"><button class="sm" id="fr" type="button">Fill timeline</button></div></details>
 <div class="row"><div><label for="prod">What you're promoting</label><input id="prod" placeholder="e.g. Arsenal home jersey"></div>
 <div><label>Language</label><div class="chips" data-g="lang"><button data-v="ms" aria-pressed="true">BM</button><button data-v="en" aria-pressed="false">English</button></div></div></div>
 <label>Hook flavour</label><div class="chips" data-g="hk"><button data-v="r" aria-pressed="true">Surprise me</button><button data-v="0" aria-pressed="false">Cliffhanger</button><button data-v="1" aria-pressed="false">Mystery</button><button data-v="2" aria-pressed="false">Straight talk</button></div>
@@ -210,6 +214,48 @@ $("pick").onchange=e=>{const x=L[e.target.value];if(x){$("link").value=x.u;$("pr
 $("emo2").onclick=()=>{if(!T.length)return;const r=/^[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u,n=T.length;T=T.map((x,i)=>r.test(x)?x:(i===0?"👀":i===1?"🔗":i===n-1?"💬":CE[(i-2)%8])+" "+x);render()};
 function pop(){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;const E=["🔥","✨","🧵","👀","💥","🎉","📖"];for(let i=0;i<26;i++){const e=document.createElement("span");e.className="cf";e.textContent=E[i%E.length];e.style.left=Math.random()*100+"vw";e.style.animationDelay=Math.random()*.5+"s";e.style.fontSize=16+Math.random()*18+"px";document.body.append(e);setTimeout(()=>e.remove(),2400)}}
 $("mt").innerHTML+=$("mt").innerHTML;
+async function research(){const t=$("topic").value.trim();if(!t){toast("Add a story title first");$("topic").focus();return}
+ const b=$("rs");b.disabled=true;b.textContent="Researching...";
+ try{const base="https://en.wikipedia.org/w/api.php?format=json&origin=*&";
+  const sr=await(await fetch(base+"action=query&list=search&srlimit=1&srsearch="+encodeURIComponent(t))).json();
+  const hit=sr.query.search[0];if(!hit)throw 0;
+  const ex=await(await fetch(base+"action=query&prop=extracts&explaintext=1&redirects=1&titles="+encodeURIComponent(hit.title))).json();
+  const txt=(Object.values(ex.query.pages)[0].extract||"").replace(/=+[^=\n]+=+/g," ").replace(/\s+/g," ");
+  const by={};(txt.match(/[^.!?]+[.!?]+/g)||[]).forEach(x=>{x=x.trim();if(x.length<30||x.length>260)return;const m=x.match(/\b(1[0-9]{3}|20[0-9]{2})\b/);if(m&&!by[m[1]])by[m[1]]=x});
+  const ys=Object.keys(by).sort();if(ys.length<3)throw 0;
+  const pk=ys.length>8?[...Array(8)].map((_,i)=>ys[Math.round(i*(ys.length-1)/7)]):ys;
+  $("tl").value=pk.map(y=>{let e=by[y].replace(new RegExp("^(In|By|During|Since|From)\\s+"+y+",?\\s*","i"),"");return y+" | "+e.charAt(0).toUpperCase()+e.slice(1)}).join("\n");
+  $("src").textContent="Source: Wikipedia, "+hit.title+". Check the facts, trim the lines, and add a 'why it matters' part if you like.";
+  toast("Timeline ready. Review it")}
+ catch(e){toast("Not enough dated facts found. Try Research with Claude")}
+ b.disabled=false;b.textContent="Auto-research timeline"}
+$("rs").onclick=research;
+$("rc").onclick=()=>{const t=$("topic").value.trim();if(!t){toast("Add a story title first");$("topic").focus();return}
+ cp("Research the true, verifiable story of: "+t+".\nReply ONLY in this format, in "+(S.lang==="ms"?"Bahasa Melayu":"English")+":\n5 to 8 lines, oldest first, each exactly: year | what happened (one sentence) | why it matters (one sentence)\nThen one final line: TWIST: the most surprising payoff line.\nUse only facts you can verify and put [?] after any fact you are unsure about.");
+ window.open("https://claude.ai/new","_blank")};
+$("fr").onclick=()=>{const L=$("rin").value.split("\n").map(x=>x.replace(/^[-*•]\s*/,"").replace(/^\d{1,2}[.)]\s+/,"").trim());const tl=L.filter(x=>x.includes("|")&&!/^twist/i.test(x)),tw=L.find(x=>/^twist\s*:/i.test(x));
+ if(tl.length<2){toast("No timeline lines found");return}$("tl").value=tl.join("\n");if(tw)$("tw").value=tw.replace(/^twist\s*:\s*/i,"");toast("Timeline filled")};
+async function ai(){const t=$("topic").value.trim();if(!t){toast("Add a story title first");$("topic").focus();return}
+ const k=$("gk").value.trim();if(!k){toast("Add your free Gemini key in AI settings");$("aset").open=true;return}
+ const b=$("ai");b.disabled=true;b.textContent="Thinking...";
+ try{let ctx="";
+  try{const base="https://en.wikipedia.org/w/api.php?format=json&origin=*&";
+   const sr=await(await fetch(base+"action=query&list=search&srlimit=1&srsearch="+encodeURIComponent(t))).json();
+   const ex=await(await fetch(base+"action=query&prop=extracts&explaintext=1&redirects=1&titles="+encodeURIComponent(sr.query.search[0].title))).json();
+   ctx=(Object.values(ex.query.pages)[0].extract||"").replace(/\s+/g," ").slice(0,15000)}catch(e){}
+  const lg=S.lang==="ms"?"Bahasa Melayu":"English";
+  const p="You are a careful history researcher and storyteller. Story: "+t+".\n"+(ctx?"Reference text from Wikipedia (verify it, it may be incomplete):\n"+ctx+"\n":"")+"Return 5 to 8 verified events, oldest first. For each: year, event (one clear sentence) and why (one vivid sentence on why it matters). Also a twist: the most surprising payoff line. Write in "+lg+". Only include facts you are confident about and skip anything doubtful.";
+  const sc={type:"OBJECT",properties:{events:{type:"ARRAY",items:{type:"OBJECT",properties:{year:{type:"STRING"},event:{type:"STRING"},why:{type:"STRING"}},required:["year","event"]}},twist:{type:"STRING"}},required:["events"]};
+  const r=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent($("gm").value.trim()||"gemini-3.6-flash")+":generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":k},body:JSON.stringify({contents:[{parts:[{text:p}]}],generationConfig:{responseMimeType:"application/json",responseSchema:sc}})});
+  const j=await r.json();if(!r.ok)throw new Error(j.error&&j.error.message||r.status);
+  const o=JSON.parse(j.candidates[0].content.parts[0].text);
+  $("tl").value=o.events.slice(0,8).map(x=>x.year+" | "+x.event+(x.why?" | "+x.why:"")).join("\n");if(o.twist)$("tw").value=o.twist;
+  $("src").textContent="Written by Gemini"+(ctx?" with Wikipedia as a reference":"")+". Check the facts before posting.";toast("Timeline ready. Review it")}
+ catch(e){toast("AI error: "+String(e.message||e).slice(0,70))}
+ b.disabled=false;b.textContent="✨ AI research & write"}
+$("ai").onclick=ai;
+try{$("gk").value=localStorage.getItem("ps3_gk")||"";$("gm").value=localStorage.getItem("ps3_gm")||"gemini-3.6-flash"}catch(e){}
+["gk","gm"].forEach(i=>$(i).onchange=()=>{try{localStorage.setItem("ps3_"+i,$(i).value.trim())}catch(e){}});
 function setTheme(t){document.documentElement.dataset.theme=t;$("th").textContent=t==="dark"?"Day mode":"Night mode";try{localStorage.setItem("ps3_theme",t)}catch(e){}}
 let t0=null;try{t0=localStorage.getItem("ps3_theme")}catch(e){}
 setTheme(t0||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));
